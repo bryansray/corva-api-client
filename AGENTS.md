@@ -56,7 +56,7 @@ Equivalent direct commands:
 ```bash
 uv run ruff format src tests
 uv run ruff check src tests
-uv run mypy
+uv run ty check
 uv run pytest
 uv build
 uv run twine check dist/*
@@ -80,7 +80,7 @@ Expectations:
 
 - `ruff format --check` passes
 - `ruff check` passes
-- `mypy` passes
+- `ty check` passes
 - `pytest` passes
 - distribution metadata validates cleanly
 
@@ -101,7 +101,7 @@ Expectations:
 - Avoid introducing unnecessary runtime dependencies.
 - If a dependency exists for a concrete serialization or API compatibility reason,
   document or preserve that rationale.
-- Preserve compatibility with `uv`, `ruff`, `mypy`, and `pytest` configuration
+- Preserve compatibility with `uv`, `ruff`, `ty`, and `pytest` configuration
   already defined in `pyproject.toml`.
 
 ## Testing Guidance

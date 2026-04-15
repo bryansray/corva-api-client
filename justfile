@@ -25,7 +25,7 @@ lint-fix:
     uv run ruff check --fix src tests
 
 typecheck:
-    uv run mypy
+    uv run ty check
 
 test:
     uv run pytest
@@ -33,7 +33,7 @@ test:
 check:
     uv run ruff format --check src tests
     uv run ruff check src tests
-    uv run mypy
+    uv run ty check
     uv run pytest
 
 build:
