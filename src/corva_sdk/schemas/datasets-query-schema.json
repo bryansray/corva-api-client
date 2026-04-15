@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "provider": {
+      "type": "string"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "assetId": {
+      "type": ["number", "null"]
+    },
+    "query": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "sort": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "skip": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "sortKeys": {
+          "type": "boolean"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["table", "json", "graph"]
+        },
+        "table": {
+          "type": "object",
+          "properties": {
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sortBy": {
+              "type": "string"
+            },
+            "sortOrder": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            }
+          }
+        },
+        "graph": {
+          "type": "object",
+          "properties": {
+            "yField": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                }
+              ]
+            },
+            "xField": {
+              "type": "string"
+            },
+            "scale": {
+              "type": "string",
+              "enum": ["raw", "independent"]
+            },
+            "mode": {
+              "type": "string",
+              "enum": ["static", "live"]
+            },
+            "pollIntervalSeconds": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "windowSize": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "incremental": {
+              "type": "boolean"
+            },
+            "incrementalField": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "sortKeys",
+        "format"
+      ]
+    }
+  },
+  "required": [
+    "dataset",
+    "query",
+    "settings"
+  ]
+}

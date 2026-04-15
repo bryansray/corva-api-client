@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=82.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "corva-sdk"
+version = "0.1.0"
+description = "Lightweight Python SDK for Corva asset and dataset access."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "LicenseRef-Proprietary"
+authors = [{ name = "Bryan Ray" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+dependencies = ["httpx>=0.28.1", "jsonschema>=4.25.1", "pymongo>=4.16.0"]
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.5",
+    "twine>=6.1.0",
+    "types-jsonschema>=4.25.1.20250822",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"corva_sdk" = ["schemas/*.json"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src", "tests"]
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+ignore_missing_imports = false
