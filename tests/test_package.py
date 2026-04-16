@@ -1,4 +1,4 @@
-from corva_sdk import CorvaClient, CorvaConfig
+from corva_api_client import CorvaClient, CorvaConfig
 
 
 def test_public_imports() -> None:

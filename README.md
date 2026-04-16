@@ -1,4 +1,4 @@
-# corva-sdk
+# corva-api-client
 
 Python SDK for working with Corva HTTP and data APIs.
 
@@ -27,13 +27,25 @@ uv sync
 To use this package from another local repository during development:
 
 ```bash
-uv add --editable /path/to/corva-sdk
+uv add --editable /path/to/corva-api-client
+```
+
+Published distribution name:
+
+```bash
+uv add corva-api-client
+```
+
+Python import path:
+
+```python
+import corva_api_client
 ```
 
 ## Quick Start
 
 ```python
-from corva_sdk import CorvaClient, CorvaConfig
+from corva_api_client import CorvaClient, CorvaConfig
 
 config = CorvaConfig.from_env()
 client = CorvaClient(config)
@@ -54,7 +66,7 @@ client.close()
 Direct resource access is also available:
 
 ```python
-from corva_sdk import CorvaClient, CorvaConfig
+from corva_api_client import CorvaClient, CorvaConfig
 
 client = CorvaClient(CorvaConfig.from_env())
 companies = client.companies.list()
@@ -76,7 +88,7 @@ client.close()
 - `CORVA_DATA_API_URL`
   - optional override for the data API base URL
 - `CORVA_APP_KEY`
-  - optional override, defaults to `corva-sdk`
+  - optional override, defaults to `corva-api-client`
 
 ## Development
 

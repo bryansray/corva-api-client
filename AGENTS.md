@@ -2,10 +2,11 @@
 
 ## Purpose
 
-This repository contains `corva-sdk`, a Python package for working with Corva HTTP
-and data APIs. The package is intended to be consumed by other internal tools,
-jobs, and applications, so changes should favor a stable public API, predictable
-packaging behavior, and clear release hygiene.
+This repository contains `corva-api-client`, a Python package for working with
+Corva HTTP and data APIs. The import path remains `corva_api_client`. The package is
+intended to be consumed by other internal tools, jobs, and applications, so
+changes should favor a stable public API, predictable packaging behavior, and
+clear release hygiene.
 
 ## Core Expectations
 
@@ -18,7 +19,7 @@ packaging behavior, and clear release hygiene.
 
 ## Repository Layout
 
-- `src/corva_sdk/`
+- `src/corva_api_client/`
   - package source
   - `client.py` contains the main `CorvaClient`
   - `config.py` contains environment-driven configuration
@@ -90,7 +91,7 @@ Expectations:
 - Package metadata lives in `pyproject.toml`.
 - Build artifacts should be created with `uv build`.
 - Distribution validation should use `twine check` via `just check-dist`.
-- `schemas/*.json` under `src/corva_sdk/` are package data and must remain included.
+- `schemas/*.json` under `src/corva_api_client/` are package data and must remain included.
 - Keep README content aligned with the actual public API and development workflow.
 
 ## Code Guidelines

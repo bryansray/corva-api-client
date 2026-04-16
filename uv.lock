@@ -190,7 +190,7 @@ wheels = [
 ]
 
 [[package]]
-name = "corva-sdk"
+name = "corva-api-client"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
