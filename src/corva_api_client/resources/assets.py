@@ -37,6 +37,7 @@ class AssetsClient:
         page: int | None = None,
         per_page: int | None = None,
         order: str | None = None,
+        visibility: str | None = None,
     ):
         params: dict[str, Any] = {}
 
@@ -58,6 +59,8 @@ class AssetsClient:
             params["sort"] = sort
         if order:
             params["order"] = order
+        if visibility:
+            params["visibility"] = visibility
         if page is not None:
             params["page"] = page
         if per_page is not None:
