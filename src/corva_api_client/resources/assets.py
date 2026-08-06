@@ -21,9 +21,9 @@ class AssetStatus(StrEnum):
 
 def _serialize_asset_status(
     status: AssetStatus | Sequence[AssetStatus] | None,
-) -> str | None:
+) -> list[str]:
     if status is None:
-        return None
+        return []
 
     raw_statuses = status.split(",") if isinstance(status, str) else status
     statuses: list[str] = []
@@ -40,7 +40,7 @@ def _serialize_asset_status(
                 f"{valid_values}. Omit status to search all statuses."
             ) from error
 
-    return ",".join(statuses) or None
+    return statuses
 
 
 class AssetsClient:
@@ -84,7 +84,7 @@ class AssetsClient:
             params["types"] = types
         serialized_status = _serialize_asset_status(status)
         if serialized_status:
-            params["status"] = serialized_status
+            params["status[]"] = serialized_status
         if company_id is not None:
             params["company_id"] = company_id
         if fields:

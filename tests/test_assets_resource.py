@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, cast
 from unittest.mock import Mock
 
+import httpx
 import pytest
 
 from corva_api_client.resources import AssetsClient, AssetStatus
@@ -29,18 +30,34 @@ def test_search_includes_visibility() -> None:
 @pytest.mark.parametrize(
     ("status", "expected"),
     [
-        (AssetStatus.ACTIVE, "active"),
-        ([AssetStatus.ACTIVE, AssetStatus.PAUSED], "active,paused"),
-        ("active, paused", "active,paused"),
+        (AssetStatus.ACTIVE, ["active"]),
+        ([AssetStatus.ACTIVE, AssetStatus.PAUSED], ["active", "paused"]),
+        ("active, paused", ["active", "paused"]),
     ],
 )
-def test_search_serializes_statuses(status, expected: str) -> None:
+def test_search_serializes_statuses(status, expected: list[str]) -> None:
     client = Mock()
     assets = AssetsClient(client)
 
     assets.search(status=status)
 
-    assert client.get.call_args.kwargs["params"]["status"] == expected
+    params = client.get.call_args.kwargs["params"]
+    assert params["status[]"] == expected
+
+
+def test_search_encodes_multiple_statuses_as_repeated_array_parameters() -> None:
+    client = Mock()
+    assets = AssetsClient(client)
+
+    assets.search(status=[AssetStatus.ACTIVE, AssetStatus.PAUSED])
+
+    params = httpx.QueryParams(client.get.call_args.kwargs["params"])
+    assert params.multi_items() == [
+        ("status[]", "active"),
+        ("status[]", "paused"),
+        ("fields", "*"),
+        ("sort", "-last_active_at"),
+    ]
 
 
 def test_search_rejects_invalid_status_before_request() -> None:
@@ -59,4 +76,4 @@ def test_search_omits_empty_status_collection() -> None:
 
     assets.search(status=[])
 
-    assert "status" not in client.get.call_args.kwargs["params"]
+    assert "status[]" not in client.get.call_args.kwargs["params"]
