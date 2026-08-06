@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+from typing import Any, cast
 from unittest.mock import Mock
 
-from corva_api_client.resources import AssetsClient
+import pytest
+
+from corva_api_client.resources import AssetsClient, AssetStatus
 
 
 def test_search_includes_visibility() -> None:
@@ -21,3 +24,39 @@ def test_search_includes_visibility() -> None:
             "visibility": "company",
         },
     )
+
+
+@pytest.mark.parametrize(
+    ("status", "expected"),
+    [
+        (AssetStatus.ACTIVE, "active"),
+        ([AssetStatus.ACTIVE, AssetStatus.PAUSED], "active,paused"),
+        ("active, paused", "active,paused"),
+    ],
+)
+def test_search_serializes_statuses(status, expected: str) -> None:
+    client = Mock()
+    assets = AssetsClient(client)
+
+    assets.search(status=status)
+
+    assert client.get.call_args.kwargs["params"]["status"] == expected
+
+
+def test_search_rejects_invalid_status_before_request() -> None:
+    client = Mock()
+    assets = AssetsClient(client)
+
+    with pytest.raises(ValueError, match="Invalid asset status 'all'"):
+        assets.search(status=cast(Any, "all"))
+
+    client.get.assert_not_called()
+
+
+def test_search_omits_empty_status_collection() -> None:
+    client = Mock()
+    assets = AssetsClient(client)
+
+    assets.search(status=[])
+
+    assert "status" not in client.get.call_args.kwargs["params"]

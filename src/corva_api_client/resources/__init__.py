@@ -12,7 +12,7 @@ from .app_settings_templates import AppSettingsTemplatesClient
 from .app_store_articles import AppStoreArticlesClient
 from .app_stream import AppStreamClient
 from .apps import AppsClient
-from .assets import AssetsClient
+from .assets import AssetsClient, AssetStatus
 from .audits import AuditsClient
 from .column_mapper_templates import ColumnMapperTemplatesClient
 from .companies import CompaniesClient
@@ -53,6 +53,7 @@ __all__ = [
     "AppStoreArticlesClient",
     "AppStreamClient",
     "AppsClient",
+    "AssetStatus",
     "AssetsClient",
     "AuditsClient",
     "ColumnMapperTemplatesClient",

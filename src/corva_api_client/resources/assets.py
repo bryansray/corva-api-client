@@ -1,9 +1,46 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
+from enum import StrEnum
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from corva_api_client.client import CorvaClient
+
+
+class AssetStatus(StrEnum):
+    UNKNOWN = "unknown"
+    ACTIVE = "active"
+    PAUSED = "paused"
+    COMPLETE = "complete"
+    IDLE = "idle"
+    DELETING = "deleting"
+    DELETION_PAUSED = "deletion_paused"
+    ARCHIVED = "archived"
+
+
+def _serialize_asset_status(
+    status: AssetStatus | Sequence[AssetStatus] | None,
+) -> str | None:
+    if status is None:
+        return None
+
+    raw_statuses = status.split(",") if isinstance(status, str) else status
+    statuses: list[str] = []
+    for raw_status in raw_statuses:
+        value = str(raw_status).strip()
+        if not value:
+            continue
+        try:
+            statuses.append(AssetStatus(value).value)
+        except ValueError as error:
+            valid_values = ", ".join(item.value for item in AssetStatus)
+            raise ValueError(
+                f"Invalid asset status {value!r}. Expected one or more of: "
+                f"{valid_values}. Omit status to search all statuses."
+            ) from error
+
+    return ",".join(statuses) or None
 
 
 class AssetsClient:
@@ -28,7 +65,7 @@ class AssetsClient:
         self,
         query: str | None = None,
         types: str | None = None,
-        status: str | None = None,
+        status: AssetStatus | Sequence[AssetStatus] | None = None,
         company_id: int | None = None,
         fields: str | None = "*",
         start: int | None = None,
@@ -45,8 +82,9 @@ class AssetsClient:
             params["search"] = query
         if types:
             params["types"] = types
-        if status:
-            params["status"] = status
+        serialized_status = _serialize_asset_status(status)
+        if serialized_status:
+            params["status"] = serialized_status
         if company_id is not None:
             params["company_id"] = company_id
         if fields:
