@@ -37,7 +37,7 @@ class PadsClient:
         if ids:
             params["ids"] = ids
         if company_id is not None:
-            params["company_id"] = company_id
+            params["company"] = company_id
         if fields:
             params["fields"] = fields
         if sort:
