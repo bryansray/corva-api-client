@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .activities import ActivitiesClient
-from .alerts import AlertsClient
+from .alerts import AlertDefinitionsClient, AlertInstancesClient, AlertsClient
 from .api_key import ApiKeyClient
 from .api_keys import ApiKeysClient
 from .app_connection import AppConnectionClient
@@ -42,6 +42,8 @@ from .workflows import WorkflowsClient
 
 __all__ = [
     "ActivitiesClient",
+    "AlertDefinitionsClient",
+    "AlertInstancesClient",
     "AlertsClient",
     "ApiKeyClient",
     "ApiKeysClient",
